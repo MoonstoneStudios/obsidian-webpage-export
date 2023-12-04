@@ -16,6 +16,7 @@ export interface MainSettingsData
 	includePluginCSS: string;
 	includeSvelteCSS: boolean;
 	customHeadContentPath: string;
+	customHeadTitle: string;
 
 	// Formatting Options
 	makeNamesWebStyle: boolean;
@@ -66,6 +67,7 @@ const DEFAULT_SETTINGS: MainSettingsData =
 	includePluginCSS: '',
 	includeSvelteCSS: true,
 	customHeadContentPath: '',
+	customHeadTitle: '<[title]>',
 
 	// Formatting Options
 	makeNamesWebStyle: true,
@@ -325,6 +327,23 @@ export class MainSettings extends PluginSettingTab
 			});
 
 		contentEl.appendChild(errorMessage);
+
+		new Setting(contentEl)
+			.setName('Custom Title')
+			.setDesc('Set a custom title for page tabs. To include the name of the document, add "<[title]>".')
+			.addText((text) => text
+				.setValue(MainSettings.settings.customHeadTitle)
+				.setPlaceholder('<[title]> (default)')
+				.onChange(async (value) => {
+					MainSettings.settings.customHeadTitle = value;
+					await MainSettings.saveSettings();
+				}
+				))
+			.addExtraButton((button) => button.setIcon('reset').setTooltip('Reset to default').onClick(() => {
+				MainSettings.settings.customHeadTitle = "<[title]>";
+				MainSettings.saveSettings();
+				this.display();
+			}));
 
 		if (MainSettings.settings.exportPreset != "raw-documents")
 		{

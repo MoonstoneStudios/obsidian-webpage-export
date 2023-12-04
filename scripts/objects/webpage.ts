@@ -407,9 +407,11 @@ export class Webpage
 
 		let relativePaths = this.getRelativePaths();
 
+		let pageTitle = MainSettings.settings.customHeadTitle.replaceAll("<\[title]>", this.source.basename);
+
 		let meta =
 		`
-		<title>${this.source.basename}</title>
+		<title>${pageTitle}</title>
 		<base href="${relativePaths.rootPath}/">
 		<meta id="root-path" root-path="${relativePaths.rootPath}/">
 
