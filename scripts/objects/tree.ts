@@ -237,7 +237,7 @@ export class TreeItem
 	protected createItemLink(container: HTMLElement): HTMLAnchorElement
 	{
 		if (this.tree.makeLinksWebStyle && this.href) this.href = Path.toWebStyle(this.href);
-		let itemLinkEl = container.createEl("a", { cls: "internal-link tree-item-link" });
+		let itemLinkEl = container.createEl("a", { cls: "internal-link tree-item-link NO-UNDERLINE" });
 		if (this.href) itemLinkEl.setAttribute("href", this.href);
 		return itemLinkEl;
 	}

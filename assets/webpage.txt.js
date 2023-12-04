@@ -74,6 +74,10 @@ async function initializePage()
 	canvasBackgroundPattern = document.querySelector(".canvas-background pattern") ?? canvasBackgroundPattern;
 	viewContent = document.querySelector(".document-container > .view-content") ?? document.querySelector(".document-container > .markdown-preview-view") ?? viewContent;
 
+	// Make the page appear more zoomed in to mimick our obsidian settings.
+	document.body.classList.add("css-settings-manager");
+	document.body.style.zoom = "1.05";
+
 	if(!fullyInitialized)
 	{	
 		initGlobalObjects();
@@ -85,6 +89,13 @@ async function initializePage()
 		contentTargetWidth = await getComputedPixelValue("--line-width") * 0.9;
 
 		window.addEventListener('resize', () => onResize());
+
+		// Open and close sidebars on key press.
+		window.addEventListener("keydown", (event) => {
+			if (event.key == "q") leftSidebar.toggleCollapse();
+			if (event.key == "e") rightSidebar.toggleCollapse();
+		});
+
 		onResize();
 		document.body.classList.toggle("post-load", true);
 		document.body.classList.toggle("loading", false);
@@ -96,6 +107,9 @@ async function initializePage()
 
 		fullyInitialized = true;
 	}
+
+	// Hide right sidebar on load
+	rightSidebar.collapse(true);
 
 	// hide the right sidebar when viewing specific file types
 	if (rightSidebar && (embedType == "video" || embedType == "embed" || customType == "excalidraw" || customType == "kanban" || documentType == "canvas")) 
